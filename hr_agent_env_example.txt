@@ -1,0 +1,17 @@
+# OpenAI API Configuration
+# Get your API key from: https://platform.openai.com/api-keys
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Tavily API Configuration (Optional)
+# Get your API key from: https://tavily.com/
+# If not provided, the system will use mock data for market research
+TAVILY_API_KEY=your_tavily_api_key_here
+
+# Optional: Model Configuration
+# OPENAI_MODEL=gpt-4
+# OPENAI_TEMPERATURE=0.7
+
+# Optional: System Configuration
+# MAX_AGENTS=10
+# CACHE_TIMEOUT=3600
+# DEBUG_MODE=False
