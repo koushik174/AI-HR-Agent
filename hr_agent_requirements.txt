@@ -1,0 +1,49 @@
+# Core LangChain dependencies
+langgraph>=0.0.20
+langchain>=0.1.0
+langchain-openai>=0.0.5
+langchain-community>=0.0.10
+
+# OpenAI integration
+openai>=1.0.0
+
+# Environment and configuration
+python-dotenv>=1.0.0
+
+# Web scraping and requests
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+
+# Data processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Type hints and extensions
+typing-extensions>=4.8.0
+
+# UI Framework
+gradio>=4.0.0
+
+# Async support
+nest-asyncio>=1.5.8
+asyncio>=3.4.3
+
+# Search integration
+tavily-python>=0.3.0
+
+# NLP processing
+spacy>=3.7.0
+
+# Utilities
+uuid
+json5>=0.9.14
+dataclasses-json>=0.6.0
+
+# Optional but recommended
+matplotlib>=3.7.0  # For workflow visualization
+networkx>=3.0  # For graph visualization
+
+# Development tools (optional)
+pytest>=7.0.0
+black>=23.0.0
+flake8>=6.0.0
