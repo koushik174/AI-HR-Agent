@@ -1,0 +1,115 @@
+# AI-HR-Agent Docker Compose Configuration
+# Provides sandboxed environment with resource limits and security
+
+version: '3.8'
+
+services:
+  ai-hr-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai-hr-agent
+
+    # ========================================
+    # Security Configuration
+    # ========================================
+    # Run as non-root user (defined in Dockerfile)
+    security_opt:
+      - no-new-privileges:true
+    # Read-only root filesystem (optional, uncomment for stricter security)
+    # read_only: true
+
+    # Drop all capabilities except what's needed
+    cap_drop:
+      - ALL
+
+    # ========================================
+    # Resource Limits (Sandbox Controls)
+    # ========================================
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'           # Max 2 CPU cores
+          memory: 4G            # Max 4GB RAM
+        reservations:
+          cpus: '0.5'           # Guaranteed 0.5 CPU cores
+          memory: 1G            # Guaranteed 1GB RAM
+
+    # Memory limits (for non-swarm mode)
+    mem_limit: 4g
+    memswap_limit: 4g           # Disable swap to prevent OOM issues
+    cpu_count: 2
+
+    # ========================================
+    # Network Configuration
+    # ========================================
+    ports:
+      - "7860:7860"             # Gradio UI
+
+    networks:
+      - hr-agent-network
+
+    # ========================================
+    # Environment Variables
+    # ========================================
+    env_file:
+      - .env                    # Load from .env file
+
+    environment:
+      - PYTHONUNBUFFERED=1
+      - GRADIO_SERVER_NAME=0.0.0.0
+      - GRADIO_SERVER_PORT=7860
+      # Optional: Override model settings
+      # - OPENAI_MODEL=gpt-4
+      # - OPENAI_TEMPERATURE=0.7
+
+    # ========================================
+    # Volume Mounts
+    # ========================================
+    volumes:
+      # Mount notebooks for development (read-write)
+      - ./notebooks:/app/notebooks:rw
+      # Mount output directory for exports
+      - ./output:/app/output:rw
+      # Optional: Mount for persistent cache
+      - hr-agent-cache:/app/.cache:rw
+
+    # ========================================
+    # Health Check
+    # ========================================
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7860/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+    # ========================================
+    # Restart Policy
+    # ========================================
+    restart: unless-stopped
+
+    # ========================================
+    # Logging Configuration
+    # ========================================
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# ========================================
+# Networks
+# ========================================
+networks:
+  hr-agent-network:
+    driver: bridge
+    # Optional: Isolate from other Docker networks
+    internal: false
+
+# ========================================
+# Volumes
+# ========================================
+volumes:
+  hr-agent-cache:
+    driver: local
