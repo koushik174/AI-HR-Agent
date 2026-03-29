@@ -23,6 +23,7 @@ typing-extensions>=4.8.0
 
 # UI Framework
 gradio>=4.0.0
+streamlit>=1.35.0
 
 # Async support
 nest-asyncio>=1.5.8
